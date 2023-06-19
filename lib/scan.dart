@@ -22,9 +22,6 @@ class _HomeState extends State<Home> {
   }
   String? imagePath;
   String? finalText;
-  String? blockk;
-  String? textt;
-  String? wordss;
   File? file;
   final textDetector = GoogleMlKit.vision.textRecognizer();
   void pickFromCamera() async {
@@ -39,27 +36,8 @@ class _HomeState extends State<Home> {
     final inputImg = InputImage.fromFile(file!);
     final RecognizedText recognizedText = await textDetector.processImage(inputImg);
     setState(() {
-      textt= recognizedText.text;
+      finalText= recognizedText.text;
     });
-    print("--- "+textt.toString());
-    for(TextBlock block in recognizedText.blocks){
-      setState(() {
-        blockk = blockk! + '------ ' + recognizedText.text;
-      });
-      for (TextLine line in block.lines){
-        setState(() {
-          wordss = wordss! + '------ ---- ' + recognizedText.text;
-        });
-        for(TextElement element in line.elements){
-          setState(() {
-            finalText = finalText! + '------ ----*-*-*-* ' + element.text;
-          });
-          print(finalText);
-        }
-      }
-    }
-
-
   }
   @override
   Widget build(BuildContext context) {
@@ -74,16 +52,16 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     onPressed: (){pickFromCamera();},
                     child: Text("cam")),
-                // ElevatedButton(
-                //     onPressed: (){pickFromGallery();},
-                //     child: Text("Gallery")),
+                ElevatedButton(
+                    onPressed: (){pickFromGallery();},
+                    child: Text("Gallery")),
                 ElevatedButton(
                     onPressed: (){getImageTxt();},
                     child: Text("extract")),
                 if(file!=null)
                 Image.file(file!),
-                if(textt!=null)
-                Text(textt.toString())
+                if(finalText!=null)
+                Text(finalText.toString())
               ],
             ),
           ),
